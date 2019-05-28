@@ -1,4 +1,6 @@
-# @ngx-utils/cookies
+# aescarcha/cookies
+
+This is a fork of @ngx-utils/cookies with the changes from SergiusSidorov/cookies to have a package published at NPM with compatibility with newer angular versions
 
 [![npm version](https://badge.fury.io/js/%40ngx-utils%2Fcookies.svg)](https://badge.fury.io/js/%40ngx-utils%2Fcookies) [![npm downloads](https://img.shields.io/npm/dm/@ngx-utils/cookies.svg)](https://www.npmjs.com/package/@ngx-utils/cookies)
 
@@ -20,7 +22,7 @@ Example in [@ngx-utils/universal-starter](https://github.com/ngx-utils/universal
 
 ## Prerequisites
 
-This package depends on `@angular v5.0.0`.
+This package depends on `@angular >= v7.0.0`.
 
 And if you want to manage cookies on server side and you're using express as server you need install:
 `npm i -S cookie-parser @nguniversal/module-map-ngfactory-loader`
@@ -29,10 +31,10 @@ And if you want to manage cookies on server side and you're using express as ser
 
 ### Installation
 
-Install **@ngx-utils/cookies** from npm:
+Install **ngx-universal-cookies** from npm:
 
 ```bash
-npm install @ngx-utils/cookies --save
+npm install ngx-universal-cookies --save
 ```
 
 ### browser.module.ts
@@ -42,7 +44,7 @@ Add **BrowserCookiesModule** to your browser module:
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserCookiesModule } from '@ngx-utils/cookies/browser';
+import { BrowserCookiesModule } from 'ngx-universal-cookies/browser';
 ...
 import { AppModule } from './app/app.module';
 import { AppComponent } from './app/app.component';
@@ -67,7 +69,7 @@ Add **ServerCookiesModule** to your server module:
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServerModule } from '@angular/platform-server';
-import { ServerCookiesModule } from '@ngx-utils/cookies/server';
+import { ServerCookiesModule } from 'ngx-universal-cookies/server';
 ...
 import { AppModule } from './app/app.module';
 import { AppComponent } from './app/app.component';
@@ -141,11 +143,11 @@ app.engine('html', ngExpressEngine({
 }));
 ```
 
-Then just import `CookiesService` from `@ngx-utils/cookies` and use it:
+Then just import `CookiesService` from `ngx-universal-cookies` and use it:
 
 ```ts
 import { Component, OnInit } from '@angular/core';
-import { CookiesService } from '@ngx-utils/cookies';
+import { CookiesService } from 'ngx-universal-cookies';
 
 @Component({
   selector: 'app-root',
@@ -196,7 +198,7 @@ import {
   CookiesService,
   CookiesOptionsService,
   CookiesOptions
-} from '@ngx-utils/cookies';
+} from 'ngx-universal-cookies';
 
 @Injectable()
 export class ServerCookiesService extends CookiesService {
