@@ -18,6 +18,7 @@ Example in [@ngx-utils/universal-starter](https://github.com/ngx-utils/universal
   * [Cookies options](#cookies-options)
 * [API](#api)
 * [Example of usage](#example-of-usage)
+* [Contributing](#contributing)
 * [License](#license)
 
 ## Prerequisites
@@ -240,6 +241,12 @@ And add `server-cookies.service.ts` to `app.server.module.ts`:
   useClass: ServerCookiesService,
 },
 ```
+
+## Contributing
+
+PRs are welcome, to publish a new version, just run
+
+    npm run release
 
 ## License
 
