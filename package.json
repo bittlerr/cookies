@@ -1,6 +1,6 @@
 {
   "name": "ngx-universal-cookies",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "description": "Manage your cookies on client and server side (Angular Universal)",
   "keywords": [
     "angular",
