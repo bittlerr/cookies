@@ -55,16 +55,15 @@ export class BrowserCookiesService extends CookiesService {
 
   private buildCookieString(name: string, value: string | undefined, options?: CookieOptions): string {
     const opts: CookieOptions = mergeOptions(this.options, options);
-    const expires = opts.expires;
-    let expiresDate: Date = opts.expires as Date;
+    let expires = opts.expires;
 
     if (isBlank(value)) {
-      expiresDate = new Date(0);
+      expires = new Date(0);
       value = '';
     }
 
     if (isString(expires)) {
-      expiresDate = new Date(expires);
+      expires = new Date(expires);
     }
 
     if (opts.sameSite === 'none' && !opts.secure) {
@@ -79,7 +78,7 @@ export class BrowserCookiesService extends CookiesService {
 
     let str = encodeURIComponent(name) + '=' + encodeURIComponent((value as string));
 
-    str += `;Expires=${expiresDate.toUTCString()}`;
+    str += expires ? `;Expires=${expires.toUTCString()}` : '';
     str += opts.maxAge ? `;Max-Age=${opts.maxAge}` : '';
     str += opts.domain ? `;Domain=${opts.domain}` : '';
     str += opts.path ? `;Path=${opts.path}` : '';
