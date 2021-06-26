@@ -23,7 +23,7 @@ Example in [@ngx-utils/universal-starter](https://github.com/ngx-utils/universal
 
 ## Prerequisites
 
-This package depends on `@angular >= v7.0.0`.
+This package depends on `@angular >= v9.0.0`.
 
 And if you want to manage cookies on server side and you're using express as server you need install:
 `npm i -S cookie-parser @nguniversal/module-map-ngfactory-loader`
