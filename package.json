@@ -1,6 +1,6 @@
 {
   "name": "@bittlerr/universal-cookies",
-  "version": "12.1.1",
+  "version": "12.1.2",
   "description": "Manage your cookies on client and server side (Angular Universal)",
   "keywords": [
     "angular",
