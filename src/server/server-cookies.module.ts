@@ -13,8 +13,8 @@ export class ServerCookiesModule {
       providers: [
         { provide: COOKIES_OPTIONS, useValue: options },
         CookiesOptionsService,
-        { provide: CookiesService, useClass: ServerCookiesService }
-      ]
+        { provide: CookiesService, useClass: ServerCookiesService },
+      ],
     };
   }
 }

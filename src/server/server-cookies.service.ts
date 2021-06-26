@@ -21,7 +21,7 @@ export class ServerCookiesService extends CookiesService {
   protected cookiesReader(): Record<string, string> {
     const allCookies: Record<string, string> = {
       ...this.request.cookies,
-      ...this.newCookies
+      ...this.newCookies,
     };
     const cookies: Record<string, string> = {};
 

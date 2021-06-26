@@ -17,13 +17,23 @@ export function mergeOptions(oldOptions: CookieOptions, newOptions?: CookieOptio
     return oldOptions;
   }
 
-  return {
+  const options = {
     path: isPresent(newOptions.path) ? newOptions.path : oldOptions.path,
     domain: isPresent(newOptions.domain) ? newOptions.domain : oldOptions.domain,
     expires: isPresent(newOptions.expires) ? newOptions.expires : oldOptions.expires,
     secure: isPresent(newOptions.secure) ? newOptions.secure : oldOptions.secure,
-    httpOnly: isPresent(newOptions.httpOnly) ? newOptions.httpOnly : oldOptions.httpOnly
+    httpOnly: isPresent(newOptions.httpOnly) ? newOptions.httpOnly : oldOptions.httpOnly,
+    maxAge: isPresent(newOptions.maxAge) ? newOptions.maxAge : oldOptions.maxAge,
+    signed: isPresent(newOptions.signed) ? newOptions.signed : oldOptions.signed,
+    encode: isPresent(newOptions.encode) ? newOptions.encode : oldOptions.encode,
+    sameSite: isPresent(newOptions.sameSite) ? newOptions.sameSite : oldOptions.sameSite,
   };
+
+  Object
+    .keys(options)
+    .forEach((key: keyof CookieOptions) => options[key] === undefined && delete options[key]);
+
+  return options;
 }
 
 export function safeDecodeURIComponent(str: string): string {
