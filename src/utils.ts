@@ -1,4 +1,4 @@
-import { CookiesOptions } from './cookies-options';
+import { CookieOptions } from './cookie-options';
 
 export function isBlank(obj: any): boolean {
   return obj === undefined || obj === null;
@@ -12,10 +12,11 @@ export function isString(obj: any): obj is string {
   return typeof obj === 'string';
 }
 
-export function mergeOptions(oldOptions: CookiesOptions, newOptions?: CookiesOptions): CookiesOptions {
+export function mergeOptions(oldOptions: CookieOptions, newOptions?: CookieOptions): CookieOptions {
   if (!newOptions) {
     return oldOptions;
   }
+
   return {
     path: isPresent(newOptions.path) ? newOptions.path : oldOptions.path,
     domain: isPresent(newOptions.domain) ? newOptions.domain : oldOptions.domain,

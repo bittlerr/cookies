@@ -1,8 +1,8 @@
-# aescarcha/cookies
+# @bittlerr/universal-cookies
 
-This is a fork of @ngx-utils/cookies with the changes from SergiusSidorov/cookies to have a package published at NPM with compatibility with newer angular versions
+This is a fork of @ngx-utils/cookies with the changes from bittlerr/cookies to support last Angular version.
 
-[![npm version](https://badge.fury.io/js/%40ngx-utils%2Fcookies.svg)](https://badge.fury.io/js/%40ngx-utils%2Fcookies) [![npm downloads](https://img.shields.io/npm/dm/@ngx-utils/cookies.svg)](https://www.npmjs.com/package/@ngx-utils/cookies)
+[![npm version](https://badge.fury.io/js/%40bittlerr%2Funiversal-cookies.svg)](https://badge.fury.io/js/%40bittlerr%2Funiversal-cookies) [![npm downloads](https://img.shields.io/npm/dm/@bittlerr/universal-cookies.svg)](https://www.npmjs.com/package/@bittlerr/universal-cookies)
 
 Manage your cookies on client and server side (Angular Universal)
 
@@ -32,10 +32,10 @@ And if you want to manage cookies on server side and you're using express as ser
 
 ### Installation
 
-Install **ngx-universal-cookies** from npm:
+Install **@bittlerr/universal-cookies** from npm:
 
 ```bash
-npm install ngx-universal-cookies --save
+npm install @bittlerr/universal-cookies --save
 ```
 
 ### browser.module.ts
@@ -45,7 +45,7 @@ Add **BrowserCookiesModule** to your browser module:
 ```ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserCookiesModule } from 'ngx-universal-cookies/browser';
+import { BrowserCookiesModule } from '@bittlerr/universal-cookies/browser';
 ...
 import { AppModule } from './app/app.module';
 import { AppComponent } from './app/app.component';
@@ -70,7 +70,7 @@ Add **ServerCookiesModule** to your server module:
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ServerModule } from '@angular/platform-server';
-import { ServerCookiesModule } from 'ngx-universal-cookies/server';
+import { ServerCookiesModule } from '@bittlerr/universal-cookies/server';
 ...
 import { AppModule } from './app/app.module';
 import { AppComponent } from './app/app.component';
@@ -131,8 +131,10 @@ import * as express from 'express';
 import * as cookieParser from 'cookie-parser';
 import { ngExpressEngine } from '@nguniversal/express-engine';
 import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+import { REQUEST, RESPONSE } from '@bittlerr/universal-cookies/tokens';
 const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/main');
 
+...
 
 app.use(cookieParser('Your private token'));
 
@@ -142,13 +144,24 @@ app.engine('html', ngExpressEngine({
     provideModuleMap(LAZY_MODULE_MAP)
   ],
 }));
+
+app.get('*', (req, res) => {
+  res.render(indexHtml, {
+    req,
+    providers: [
+      { provide: APP_BASE_HREF, useValue: req.baseUrl },
+      { provide: REQUEST, useValue: res },
+      { provide: RESPONSE, useValue: res },
+    ],
+  });
+});
 ```
 
-Then just import `CookiesService` from `ngx-universal-cookies` and use it:
+Then just import `CookiesService` from `@bittlerr/universal-cookies` and use it:
 
 ```ts
 import { Component, OnInit } from '@angular/core';
-import { CookiesService } from 'ngx-universal-cookies';
+import { CookiesService } from '@bittlerr/universal-cookies';
 
 @Component({
   selector: 'app-root',
@@ -199,7 +212,7 @@ import {
   CookiesService,
   CookiesOptionsService,
   CookiesOptions
-} from 'ngx-universal-cookies';
+} from '@bittlerr/universal-cookies';
 
 @Injectable()
 export class ServerCookiesService extends CookiesService {

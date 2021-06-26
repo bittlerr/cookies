@@ -1,11 +1,11 @@
 {
-  "name": "ngx-universal-cookies",
-  "version": "8.0.1",
+  "name": "@bittlerr/universal-cookies",
+  "version": "12.1.0",
   "description": "Manage your cookies on client and server side (Angular Universal)",
   "keywords": [
     "angular",
-    "angular8",
-    "angular 8",
+    "angular12",
+    "angular 12",
     "angular universal",
     "cookie",
     "cookies"
@@ -19,38 +19,41 @@
     "copy": "cpy LICENSE package.json README.md release",
     "build:js": "ngc",
     "build:umd": "rollup -c",
-    "build:minify": "uglifyjs release/bundles/cookies.umd.js --screw-ie8 --compress --mangle --comments --output release/bundles/cookies.umd.min.js",
+    "build:minify": "uglifyjs release/bundles/cookies.umd.js --ie8 --compress --mangle --comments --output release/bundles/cookies.umd.min.js",
     "prebuild": "npm run clean:pre",
     "build": "npm run build:js && npm run build:umd && npm run build:minify",
     "postbuild": "npm run clean:post && npm run copy",
     "release": "npm run build && cd ./release && npm publish"
   },
   "peerDependencies": {
-    "@angular/core": ">=8.0.0 || ^8.0.0-rc.0",
+    "@angular/core": ">=9.0.0",
     "rxjs": ">=6.0.0",
-    "zone.js": ">=0.9"
+    "zone.js": ">=0.10"
+  },
+  "dependencies": {
+    "@angular/common": "^12.1.0",
+    "@angular/compiler": "^12.1.0",
+    "@angular/core": "^12.1.0",
+    "rxjs": "^6.6.7",
+    "zone.js": "0.11.4"
   },
   "devDependencies": {
-    "@angular/common": "^8.0.0 || ^8.0.0-rc.0",
-    "@angular/compiler": "^8.0.0 || ^8.0.0-rc.0",
-    "@angular/compiler-cli": "^8.0.0 || ^8.0.0-rc.0",
-    "@angular/core": "^8.0.0 || ^8.0.0-rc.0",
-    "cpy-cli": "^1.0.1",
-    "rimraf": "^2.6.1",
-    "rollup": "^0.43.0",
-    "rxjs": "^6.0.0",
-    "typescript": "^3.4.0",
-    "uglify-js": "^3.0.18",
-    "zone.js": "^0.9"
+    "@angular/compiler-cli": "^12.1.0",
+    "cpy-cli": "^3.1.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.52.3",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "tslint": "^6.1.3",
+    "typescript": "4.3.4",
+    "uglify-js": "^3.13.9"
   },
-  "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aescarcha/cookies"
+    "url": "git+https://github.com/bittlerr/cookies"
   },
-  "homepage": "https://github.com/aescarcha/cookies#readme",
+  "homepage": "https://github.com/bittlerr/cookies#readme",
   "bugs": {
-    "url": "https://github.com/aescarcha/cookies/issues"
+    "url": "https://github.com/bittlerr/cookies/issues"
   },
   "author": "Anton Barada",
   "license": "MIT"

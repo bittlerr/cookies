@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 
 import { CookiesService } from '../cookies.service';
-import { CookiesOptions } from '../cookies-options';
+import { CookieOptions } from '../cookie-options';
 import { CookiesOptionsService } from '../cookies-options.service';
 import { isBlank, isString, mergeOptions, safeDecodeURIComponent } from '../utils';
 
 @Injectable()
 export class BrowserCookiesService extends CookiesService {
+  constructor(cookiesOptions: CookiesOptionsService) {
+    super(cookiesOptions);
+  }
+
   get cookieString(): string {
     return document.cookie || '';
   }
@@ -15,59 +19,86 @@ export class BrowserCookiesService extends CookiesService {
     document.cookie = val;
   }
 
-  constructor(cookiesOptions: CookiesOptionsService) {
-    super(cookiesOptions);
-  }
-
   protected cookiesReader(): { [key: string]: any } {
-    let lastCookies = {};
+    let lastCookies: Record<string, string> = {};
     let lastCookieString = '';
-    let cookiesArray: string[], cookie: string, i: number, index: number, name: string;
     let currentCookieString = this.cookieString;
+
     if (currentCookieString !== lastCookieString) {
       lastCookieString = currentCookieString;
-      cookiesArray = lastCookieString.split('; ');
+      const cookiesArray = lastCookieString.split('; ');
       lastCookies = {};
-      for (i = 0; i < cookiesArray.length; i++) {
-        cookie = cookiesArray[i];
-        index = cookie.indexOf('=');
-        if (index > 0) {  // ignore nameless cookies
-          name = safeDecodeURIComponent(cookie.substring(0, index));
-          if (isBlank((<any>lastCookies)[name])) {
-            (<any>lastCookies)[name] = safeDecodeURIComponent(cookie.substring(index + 1));
+
+      for (let i = 0; i < cookiesArray.length; i++) {
+        const cookie = cookiesArray[i];
+        const index = cookie.indexOf('=');
+
+        if (index > 0) {
+          // ignore nameless cookies
+          const name = safeDecodeURIComponent(cookie.substring(0, index));
+
+          if (isBlank((lastCookies)[name])) {
+            lastCookies[name] = safeDecodeURIComponent(cookie.substring(index + 1));
           }
         }
       }
     }
+
     return lastCookies;
   }
 
-  protected cookiesWriter(): (name: string, value: string | undefined, options?: CookiesOptions) => void {
-    return (name: string, value: string | undefined, options?: CookiesOptions) => {
+  protected cookiesWriter(): (name: string, value: string | undefined, options?: CookieOptions) => void {
+    return (name: string, value: string | undefined, options?: CookieOptions) => {
       this.cookieString = this.buildCookieString(name, value, options);
     };
   }
 
-  private buildCookieString(name: string, value: string | undefined, options?: CookiesOptions): string {
-    let opts: CookiesOptions = mergeOptions(this.options, options);
-    let expires: any = opts.expires;
+  private buildCookieString(name: string, value: string | undefined, options?: CookieOptions): string {
+    const opts: CookieOptions = mergeOptions(this.options, options);
+    const expires = opts.expires;
+    let expiresDate: Date = opts.expires as Date;
+
     if (isBlank(value)) {
-      expires = 'Thu, 01 Jan 1970 00:00:00 GMT';
+      expiresDate = new Date(0);
       value = '';
     }
+
     if (isString(expires)) {
-      expires = new Date(expires);
+      expiresDate = new Date(expires);
     }
+
+    if (opts.sameSite === 'none' && !opts.secure) {
+      console.error(
+        [
+          `Cookie "${name}" rejected`,
+          `because it has the “SameSite=None” attribute but is missing the “secure” attribute.`
+        ]
+          .join(' ')
+      );
+    }
+
     let str = encodeURIComponent(name) + '=' + encodeURIComponent((value as string));
-    str += opts.path ? ';path=' + opts.path : '';
-    str += opts.domain ? ';domain=' + opts.domain : '';
-    str += expires ? ';expires=' + expires.toUTCString() : '';
-    str += opts.secure ? ';secure' : '';
-    let cookiesLength = str.length + 1;
+
+    str += `;Expires=${expiresDate.toUTCString()}`;
+    str += opts.maxAge ? `;Max-Age=${opts.maxAge}` : '';
+    str += opts.domain ? `;Domain=${opts.domain}` : '';
+    str += opts.path ? `;Path=${opts.path}` : '';
+    str += opts.secure ? ';Secure' : '';
+    str += opts.httpOnly ? ';HttpOnly' : '';
+    str += opts.sameSite ? `;SameSite=${opts.sameSite}` : '';
+
+    const cookiesLength = str.length + 1;
+
     if (cookiesLength > 4096) {
-      console.log(`Cookie \'${name}\' possibly not set or overflowed because it was too
-      large (${cookiesLength} > 4096 bytes)!`);
+      console.log(
+        [
+          `Cookie \'${name}\' possibly not set`,
+          `or overflowed because it was too large (${cookiesLength} > 4096 bytes)!`
+        ]
+          .join(' ')
+      );
     }
+
     return str;
   }
 }

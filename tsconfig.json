@@ -33,6 +33,7 @@
   "files": [
     "index.ts",
     "browser.ts",
+    "tokens.ts",
     "server.ts"
   ],
   "angularCompilerOptions": {
