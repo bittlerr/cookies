@@ -10,20 +10,20 @@ Example in [@ngx-utils/universal-starter](https://github.com/ngx-utils/universal
 
 ## Table of contents:
 
-* [Prerequisites](#prerequisites)
-* [Getting started](#getting-started)
-  * [Installation](#installation)
-  * [browser.module.ts](#browsermodulets)
-  * [server.module.ts](#servermodulets)
-  * [Cookies options](#cookies-options)
-* [API](#api)
-* [Example of usage](#example-of-usage)
-* [Contributing](#contributing)
-* [License](#license)
+- [Prerequisites](#prerequisites)
+- [Getting started](#getting-started)
+  - [Installation](#installation)
+  - [browser.module.ts](#browsermodulets)
+  - [server.module.ts](#servermodulets)
+  - [Cookies options](#cookies-options)
+- [API](#api)
+- [Example of usage](#example-of-usage)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Prerequisites
 
-This package depends on `@angular >= v9.0.0`.
+This package depends on `@angular >= v14.0.0`.
 
 And if you want to manage cookies on server side and you're using express as server you need install:
 `npm i -S cookie-parser @nguniversal/module-map-ngfactory-loader`
@@ -114,13 +114,13 @@ ServerCookiesModule.forRoot({
 
 `CookieService` has following methods:
 
-* `put(key: string, value: string, options?: CookiesOptions): void` put some value to cookies;
-* `putObject(key: string, value: Object, options?: CookiesOptions): void` put object value to cookies;
-* `get(key: string): string` get some value from cookies by `key`;
-* `getObject(key: string): { [key: string]: string } | string` get object value from cookies by `key`;
-* `getAll(): { [key: string]: string }` get all cookies ;
-* `remove(key: string, options?: CookiesOptions): void` remove cookie by `key`;
-* `removeAll(): void` remove all cookies;
+- `put(key: string, value: string, options?: CookiesOptions): void` put some value to cookies;
+- `putObject(key: string, value: Object, options?: CookiesOptions): void` put object value to cookies;
+- `get(key: string): string` get some value from cookies by `key`;
+- `getObject(key: string): { [key: string]: string } | string` get object value from cookies by `key`;
+- `getAll(): { [key: string]: string }` get all cookies ;
+- `remove(key: string, options?: CookiesOptions): void` remove cookie by `key`;
+- `removeAll(): void` remove all cookies;
 
 ## Example of usage
 
@@ -166,7 +166,7 @@ import { CookiesService } from '@bittlerr/universal-cookies';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
   constructor(private cookies: CookiesService) {}
@@ -174,7 +174,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.cookies.put('some_cookie', 'some_cookie');
     this.cookies.put('http_only_cookie', 'http_only_cookie', {
-      httpOnly: true
+      httpOnly: true,
     });
     console.log(this.cookies.get('some_cookie'), ' => some_cookie');
     console.log(this.cookies.get('http_only_cookie'), ' => undefined');
@@ -196,9 +196,9 @@ app.use(async (ctx: Context) => {
       provideModuleMap(LAZY_MODULE_MAP),
       {
         provide: 'KOA_CONTEXT',
-        useValue: ctx
-      }
-    ]
+        useValue: ctx,
+      },
+    ],
   });
 });
 ```
@@ -211,7 +211,7 @@ import { Inject, Injectable } from '@angular/core';
 import {
   CookiesService,
   CookiesOptionsService,
-  CookiesOptions
+  CookiesOptions,
 } from '@bittlerr/universal-cookies';
 
 @Injectable()
@@ -220,7 +220,7 @@ export class ServerCookiesService extends CookiesService {
 
   constructor(
     cookiesOptions: CookiesOptionsService,
-    @Inject('KOA_CONTEXT') private ctx: Context
+    @Inject('KOA_CONTEXT') private ctx: Context,
   ) {
     super(cookiesOptions);
   }
@@ -236,7 +236,7 @@ export class ServerCookiesService extends CookiesService {
   protected cookiesWriter(): (
     name: string,
     value: string | undefined,
-    options?: CookiesOptions
+    options?: CookiesOptions,
   ) => void {
     return (name: string, value: string | undefined, options?: any) => {
       this.newCookies[name] = value;
